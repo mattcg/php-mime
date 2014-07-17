@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+$mime_types = array();
+
+while ($line = fgets(STDIN)) {
+	if ('#' === $line[0]) {
+		continue;
+	}
+
+	$mime_type = substr($line, 0, strpos($line, "\t"));
+	$extensions = explode(' ', substr($line, strrpos($line, "\t") + 1, -1));
+	if (count($extensions) > 1) {
+		$mime_types[$mime_type] = $extensions;
+	} else {
+		$mime_types[$mime_type] = $extensions[0];
+	}
+}
+
+fwrite(STDOUT, json_encode($mime_types, JSON_PRETTY_PRINT));

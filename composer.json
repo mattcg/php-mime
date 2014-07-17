@@ -1,0 +1,25 @@
+{
+	"name": "karwana/mime",
+	"type": "library",
+	"version": "1.0.0",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Matthew Caruana Galizia",
+			"email": "mcg@karwana.com",
+			"role": "developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Karwana\\Mime\\": "Mime/"
+		}
+	},
+	"require": {
+		"php": ">=5.3.0"
+	},
+	"require-dev": {
+		"phing/phing": "~2.8.1",
+		"phpunit/phpunit": "~4.1.3"
+	}
+}

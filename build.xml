@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Mime" default="test">
+
+	<!-- Target: test -->
+	<target name="test" description="Verify all unit tests pass; fail if not">
+		<exec executable="vendor/bin/phpunit" passthru="true" checkreturn="true">
+			<arg line="-c tests/phpunit.xml" />
+		</exec>
+	</target>
+</project>
