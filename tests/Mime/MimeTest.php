@@ -37,6 +37,19 @@ class MimeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertNull($mime_type);
 	}
 
+	public function testGetExtensionForType_ReturnsNullForUnknownType() {
+		$this->assertNull(Mime::getExtensionForType('blabla'));
+	}
+
+	public function testGetExtensionForType_ReturnsFirstExtension() {
+
+		// Check for type with multiple extensions.
+		$this->assertEquals('jpeg', Mime::getExtensionForType('image/jpeg'));
+
+		// Check for type with single extension.
+		$this->assertEquals('pdf', Mime::getExtensionForType('application/pdf'));
+	}
+
 	public function testGuessExtension_ReturnsExtensionPresentInFileName() {
 		$extension = Mime::guessExtension('does_not_exist.jpg');
 		$this->assertEquals('jpg', $extension);
@@ -62,6 +75,20 @@ class MimeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('jpeg', $extension);
 	}
 
+	public function testGetTypeForExtension_ReturnsFirstExtension() {
+
+		// Check for type with multiple extensions.
+		$this->assertEquals('image/jpeg', Mime::getTypeForExtension('jpg'));
+		$this->assertEquals('image/jpeg', Mime::getTypeForExtension('jpeg'));
+
+		// Check for type with single extension.
+		$this->assertEquals('application/pdf', Mime::getTypeForExtension('pdf'));
+	}
+
+	public function testGetTypeForExtension_ReturnsNullForUnknownExtension() {
+		$this->assertNull(Mime::getTypeForExtension('blabla'));
+	}
+
 	public function testGuessType_UsesExtensionPresentInFileName() {
 		$mime_type = Mime::guessType('does_not_exist.jpg');
 		$this->assertEquals('image/jpeg', $mime_type);
@@ -85,5 +112,21 @@ class MimeTest extends \PHPUnit_Framework_TestCase {
 	public function testHasType() {
 		$this->assertTrue(Mime::hasType('image/jpeg'));
 		$this->assertFalse(Mime::hasType('test/type'));
+	}
+
+	public function testGetExtensionsForType_ReturnsArray() {
+		$this->assertEquals(array('jpeg', 'jpg', 'jpe'), Mime::getExtensionsForType('image/jpeg'));
+		$this->assertEquals(array('pdf'), Mime::getExtensionsForType('application/pdf'));
+	}
+
+	public function testGetExtensionsForType_ReturnsNullForUnknownType() {
+		$this->assertNull(Mime::getExtensionsForType('blabla'));
+	}
+
+	public function testHasExtension() {
+		$this->assertTrue(Mime::hasExtension('jpeg'));
+		$this->assertTrue(Mime::hasExtension('jpg'));
+		$this->assertTrue(Mime::hasExtension('pdf'));
+		$this->assertFalse(Mime::hasExtension('blabla'));
 	}
 }
