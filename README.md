@@ -6,23 +6,38 @@ MIME type and file extension utilities for PHP. Powered by [`finfo`](http://php.
 
 ## Examples ##
 
-Get the MIME type of an uploaded file. The original file name is used before falling back to running `finfo` if the file has no extension or if the extension is unlisted.
+To get started, use the namespace wherever you want to use this library.
 
 ```php
 use Karwana\Mime;
-
-$mime_type = Mime::guessType($_FILES['my_file']['tmp_name'], $_FILES['my_file']['name']);
-
-// Now get the canonical extension.
-$extension = Mime::getExtensionForType(mime_type);
 ```
 
-Add an extension to an extensionless file.
+### For uploaded files ###
+
+First we get the canonical extension and use it for the permanent file name. The original file name is used before falling back to running `finfo` if the file has no extension or if the extension is unlisted.
 
 ```php
-file_path = 'path/to/extensionless_file';
+$extension = Mime::guessExtension($_FILES['my_file']['tmp_name'], $_FILES['my_file']['name']);
 
-rename($file_path, $file_path . '.' . Mime::guessExtension($file_path));
+move_uploaded_file($_FILES['my_file']['tmp_name'], 'uploads/' . Uuid::v4() . '.' . $extension);
+```
+
+Later on, if we want to serve the file to the client, we can return the appropriate MIME type.
+
+```php
+header('Content-Type: ' . Mime::guessType($my_file));
+header('Content-Length: ' . filesize($my_file));
+readfile($my_file);
+```
+
+### Add an extension to an extensionless file ###
+
+You might want to do this as part of a batch job.
+
+```php
+$my_file = 'path/to/extensionless_file';
+
+rename($my_file, $my_file . '.' . Mime::guessExtension($my_file));
 ```
 
 ## Development ##
@@ -36,3 +51,6 @@ curl https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types | \
 bin/mime_types2json > Mime/Resources/mime_types.json
 ```
 
+## License ##
+
+See `LICENSE`.
