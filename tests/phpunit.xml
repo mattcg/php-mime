@@ -11,4 +11,7 @@
 	<testsuite name="Mime Test Results">
 		<directory>./</directory>
 	</testsuite>
+	<logging>
+		<log type="coverage-html" target="./coverage/html" charset="UTF-8" />
+	</logging>
 </phpunit>

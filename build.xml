@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Mime" default="test">
 
+	<!-- Target: clean -->
+	<target name="clean" description="Delete generated files">
+		<delete dir="./tests/coverage" />
+	</target>
+
 	<!-- Target: test -->
 	<target name="test" description="Verify all unit tests pass; fail if not">
 		<exec executable="vendor/bin/phpunit" passthru="true" checkreturn="true">
