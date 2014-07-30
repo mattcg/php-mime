@@ -23,6 +23,14 @@ class Mime {
 		}
 	}
 
+
+	/**
+	 * Get the MIME type associated with a given extension.
+	 *
+	 * @param string $extension A file extension e.g. pdf.
+	 *
+	 * @return string|null The associated MIME type or null if none found.
+	 */
 	public static function getTypeForExtension($extension) {
 		static::ensureDataLoaded();
 
@@ -38,6 +46,14 @@ class Mime {
 		}
 	}
 
+
+	/**
+	 * Get the extension associated with a given MIME type.
+	 *
+	 * @param string $mime_type A MIME type e.g. application/pdf.
+	 *
+	 * @return string|null The first available associated extension or null if none found.
+	 */
 	public static function getExtensionForType($mime_type) {
 		static::ensureDataLoaded();
 
@@ -53,6 +69,14 @@ class Mime {
 		return $extensions;
 	}
 
+
+	/**
+	 * Get all the extensions associated with a given MIME type.
+	 *
+	 * @param string $mime_type A MIME type e.g. application/pdf.
+	 *
+	 * @return string[]|null An array of all the associated extensions or null if none found.
+	 */
 	public static function getExtensionsForType($mime_type) {
 		static::ensureDataLoaded();
 
@@ -61,6 +85,14 @@ class Mime {
 		}
 	}
 
+
+	/**
+	 * Check if an extension is known.
+	 *
+	 * @param string $extension An extension e.g. pdf.
+	 *
+	 * @return boolean
+	 */
 	public static function hasExtension($extension) {
 		static::ensureDataLoaded();
 
@@ -78,11 +110,29 @@ class Mime {
 		return false;
 	}
 
+
+	/**
+	 * Check if a MIME type is known.
+	 *
+	 * @param string $mime_type A MIME type e.g. application/pdf.
+	 *
+	 * @return boolean
+	 */
 	public static function hasType($mime_type) {
 		static::ensureDataLoaded();
 		return isset(static::$mime_types[$mime_type]);
 	}
 
+
+	/**
+	 * Guess the MIME type of a given file, first by checking the extension then by falling back to magic.
+	 *
+	 * @param string $file_path Relative or absolute path to an existing file.
+	 * @param string $reference_name Use this name for detection based on the extension.
+	 * @param string $default Default MIME type.
+	 *
+	 * @return string|null The associated MIME type or the default if none found.
+	 */
 	public static function guessType($file_path, $reference_name = null, $default = 'application/octet-stream') {
 		if (!$reference_name) {
 			$reference_name = basename($file_path);
@@ -103,6 +153,16 @@ class Mime {
 		return $default;
 	}
 
+
+	/**
+	 * Guess the extension of a given file, first by checking the path then by falling back to magic.
+	 *
+	 * @param string $file_path Relative or absolute path to an existing file.
+	 * @param string $reference_name Use this name for detection based on the extension.
+	 * @param string $default Default extension.
+	 *
+	 * @return string|null The associated extension or the default if none found.
+	 */
 	public static function guessExtension($file_path, $reference_name = null, $default = 'bin') {
 		if (!$reference_name) {
 			$reference_name = basename($file_path);
@@ -120,13 +180,20 @@ class Mime {
 		return $default;
 	}
 
+
+	/**
+	 * Get the MIME type of a file using magic.
+	 *
+	 * @param string $file_path Relative or absolute path to an existing file.
+	 *
+	 * @return string|null The associated MIME type or null if no known type was detected.
+	 */
 	public static function getMagicType($file_path) {
 		$file_info = finfo_open(FILEINFO_MIME_TYPE);
 		$mime_type = finfo_file($file_info, $file_path);
 		finfo_close($file_info);
 
-		// Only return valid types, in order to maintain circular compatibility
-		// between methods.
+		// Only return valid types, in order to maintain circular compatibility between methods.
 		if (static::hasType($mime_type)) {
 			return $mime_type;
 		}
