@@ -1,5 +1,7 @@
 # MIME #
 
+[![Build Status](https://travis-ci.org/karwana/php-mime.svg?branch=master)](https://travis-ci.org/karwana/php-mime)
+
 MIME type and file extension utilities for PHP. Powered by [`finfo`](http://php.net/manual/en/book.fileinfo.php) and the Apache-provided public domain [mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types) map of media types to unique file extension(s).
 
 ## Examples ##
